@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Url-Alias Configuration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-mid-12">
+            <button type="button" class="btn btn-info">Add Url</button>
+        </div>
+        <div class="col-mid-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Alias</th>
+                    <th>Url</th>
+                    <th>Operation</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{ with .List}}
+                    {{ range . }}
+                    <tr>
+                        <td>{{ .Alias }}</td>
+                        <td>{{ .Url }}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    {{ end }}
+                {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
