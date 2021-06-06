@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -18,7 +19,7 @@ type Alias struct {
 }
 
 func main() {
-	var templates = template.Must(template.ParseFiles("html/config.html"))
+	var templates = template.Must(template.ParseFiles("./html/config.html"))
 
 	initConfig()
 
@@ -31,6 +32,7 @@ func main() {
 		}
 	})
 
+
 	// config html
 	http.HandleFunc("/config", func(writer http.ResponseWriter, r *http.Request) {
 		list := make([]*Alias, 0)
@@ -40,6 +42,21 @@ func main() {
 			}
 		}
 		templates.ExecuteTemplate(writer, "config.html", &PageValue{List: list})
+	})
+
+	// config json
+	http.HandleFunc("/json", func(writer http.ResponseWriter, r *http.Request) {
+		list := make([]*Alias, 0)
+		for _, key := range viper.AllKeys() {
+			if value := viper.GetString(key); value != "" {
+				list = append(list, &Alias{key, value})
+			}
+		}
+		writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		writer.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(writer).Encode(list); err != nil {
+			panic(err)
+		}
 	})
 
 	http.ListenAndServe(":80", nil)
